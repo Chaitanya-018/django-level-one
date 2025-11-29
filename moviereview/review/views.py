@@ -116,46 +116,46 @@ def movie_info(request):
 @csrf_exempt
 def movies(request):
 
-    if request.method == "GET":
-        Movie_info = Movie_details.objects.all()
-        movie_list = []
+    # if request.method == "GET":
+    #     Movie_info = Movie_details.objects.all()
+    #     movie_list = []
 
-        for movie in Movie_info:
-            movie_list.append({
-                "movie_name": movie.movie_name,
-                "release_date": movie.release_date,
-                "budget": movie.budget,
-                "rating": movie.rating
-            })
-
-        return JsonResponse({"status": "success", "data": movie_list}, status=200)
-
-
-    # if request.method=="GET":
-    #     Movie_info=Movie_details.objects.all()
-    #     movie_list=[]
-    #     rating_filter=request.GET.get("rating")
-    #     min_bud_filter=request.GET.get("min_budget")
-    #     max_bud_filter=request.GET.get("max_budget")
-    #     if rating_filter:
-    #         Movie_info=Movie_info.filter(rating__gte=float(rating_filter))
     #     for movie in Movie_info:
-    #         if min_bud_filter or max_bud_filter:
-    #             budget_str=movie.budget.lower().replace("cr","")
-    #             budget_value=float(budget_str)
-    #             if min_bud_filter and budget_value<=float(min_bud_filter):
-    #                 continue
-    #             if max_bud_filter and budget_value>=float(max_bud_filter):
-    #                 continue                
     #         movie_list.append({
-    #             "movie_name":movie.movie_name,
-    #             "release_date":movie.release_date,
-    #             "budget":movie.budget,
-    #             "rating":movie.rating
+    #             "movie_name": movie.movie_name,
+    #             "release_date": movie.release_date,
+    #             "budget": movie.budget,
+    #             "rating": movie.rating
     #         })
-    #     if len(movie_list)==0:
-    #         return JsonResponse({"status":"success","message":"no movies found matching the criteria"},status=200)
-    #     return JsonResponse({"status":"success","data":movie_list},status=200)
+
+    #     return JsonResponse({"status": "success", "data": movie_list}, status=200)
+
+
+    if request.method=="GET":
+        Movie_info=Movie_details.objects.all()
+        movie_list=[]
+        rating_filter=request.GET.get("rating")
+        min_bud_filter=request.GET.get("min_budget")
+        max_bud_filter=request.GET.get("max_budget")
+        if rating_filter:
+            Movie_info=Movie_info.filter(rating__gte=float(rating_filter))
+        for movie in Movie_info:
+            if min_bud_filter or max_bud_filter:
+                budget_str=movie.budget.lower().replace("cr","")
+                budget_value=float(budget_str)
+                if min_bud_filter and budget_value<=float(min_bud_filter):
+                    continue
+                if max_bud_filter and budget_value>=float(max_bud_filter):
+                    continue                
+            movie_list.append({
+                "movie_name":movie.movie_name,
+                "release_date":movie.release_date,
+                "budget":movie.budget,
+                "rating":movie.rating
+            })
+        if len(movie_list)==0:
+            return JsonResponse({"status":"success","message":"no movies found matching the criteria"},status=200)
+        return JsonResponse({"status":"success","data":movie_list},status=200)
     
     elif request.method=="PUT":
         data=json.loads(request.body)
