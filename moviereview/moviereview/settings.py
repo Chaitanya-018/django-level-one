@@ -25,9 +25,13 @@ SECRET_KEY = 'django-insecure-61u5r)s-pm%t2v4bi=uh3ng$ny#p1co7_l3nkv(t%$f5q=y5r!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "django-level-one-i1af.onrender.com"
-]
+# ALLOWED_HOSTS = [      
+#     "django-level-one-i1af.onrender.com"
+# ]   #production mode
+
+ALLOWED_HOSTS = []  #dev mode
+    
+
 
 
 # Application definition
@@ -50,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'review.middlewares.MovieReviewMiddleware',
 ]
 
 ROOT_URLCONF = 'moviereview.urls'
@@ -77,11 +82,20 @@ WSGI_APPLICATION = 'moviereview.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",   # Database backend (MySQL)
+        "NAME": "movie_reviews",                         # Database name
+        "USER": "root",                         # MySQL username
+        "PASSWORD": "root",        # MySQL password
+        "HOST": "127.0.0.1",                     # Database server (localhost)
+        "PORT": "3306",                          # MySQL default port
+        "OPTIONS": {
+            "charset": "utf8mb4",                # Supports emojis and special characters
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",  # Safer SQL mode
+        },
     }
 }
+
 
 
 # Password validation
